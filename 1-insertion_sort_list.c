@@ -1,11 +1,13 @@
 #include "sort.h"
 /**
+ * insertion_sort_list - Algo for sorting
+ * @list: the list to be sorted
  */
 void insertion_sort_list(listint_t **list)
 {
 	listint_t *pointer, *ash, *temp;
 
-	if(list == NULL || *list == NULL || (*list)->next == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 	ash = (*list)->next;
 
@@ -15,9 +17,9 @@ void insertion_sort_list(listint_t **list)
 		while (temp->prev != NULL && temp->n < temp->prev->n)
 		{
 			pointer = temp->prev;
-			if (temp ->next != NULL)
+			if (temp->next != NULL)
 				temp->next->prev = pointer;
-			if(pointer->prev != NULL)
+			if (pointer->prev != NULL)
 				pointer->prev->next = temp;
 			else
 				*list = temp;
