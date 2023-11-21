@@ -1,48 +1,58 @@
 #include "sort.h"
 
 /**
- * sort - the recursive sort function
+ * partition - the partition function for quicksort
  * @array: the array to be sorted
  * @low: to indicate the start of the partition
  * @high: to indicate the end of the partition
- * @size: the sixe of the array
+ * @size: the size of the array
+ * Return: the index of the pivot
  */
-void sort(int *array, int low, int high, int size)
+int partition(int *array, int low, int high, int size)
 {
 	int pivot, start, end, temp;
 
 	pivot = array[high];
-	start = low;
-	end = high;
-	temp = 0;
-
-	if (low >= high)
-		return;
-	while (start <= end)
+	start = low - 1;
+	for (end = low; end < high; end++)
 	{
-		while (array[start] < pivot)
+		if (array[end] < pivot)
 		{
 			start++;
-		}
-		while (array[end] > pivot)
-		{
-			end--;
-		}
-
-		if (start <= end)
-		{
 			temp = array[start];
 			array[start] = array[end];
 			array[end] = temp;
-			print_array(array, size);
-			end--;
-			start++;
+			if (start != end)
+				print_array(array, size);
 		}
 	}
-
-	sort(array, low, end, size);
-	sort(array, start, high, size);
+	temp = array[start + 1];
+	array[start + 1] = array[high];
+	array[high] = temp;
+	if (start + 1 != high)
+		print_array(array, size);
+	return (start + 1);
 }
+
+/**
+ * sort - the recursive sort function
+ * @array: the array to be sorted
+ * @low: to indicate the start of the partition
+ * @high: to indicate the end of the partition
+ * @size: the size of the array
+ */
+void sort(int *array, int low, int high, int size)
+{
+	int pivot_index;
+
+	if (low < high)
+	{
+		pivot_index = partition(array, low, high, size);
+		sort(array, low, pivot_index - 1, size);
+		sort(array, pivot_index + 1, high, size);
+	}
+}
+
 /**
  * quick_sort - the quick sort algorithm
  * @array: the array to be sorted
@@ -54,3 +64,4 @@ void quick_sort(int *array, size_t size)
 		return;
 	sort(array, 0, size - 1, size);
 }
+
